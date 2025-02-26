@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../style/signup.css';
 
 export const Signup = () => {
-  const [ Username, setName] = useState('');
+  const [Username, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -16,12 +18,19 @@ export const Signup = () => {
         email,
         password,
       });
+      
       console.log('Signup successful:', response.data);
-      setName('');
-      setEmail('');
-      setPassword('');
+      
+      if (response.data.message === 'User registered successfully') {
+        alert('User registered successfully')
+        setName('');
+        setEmail('');
+        setPassword('');
+        navigate('/login');
+      }
     } catch (error) {
       console.log('Something went wrong:', error);
+      alert('Something went wrong')
     }
   }
 
